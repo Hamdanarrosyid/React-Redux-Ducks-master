@@ -1,11 +1,13 @@
 import {
     GET_VALUE,
+    GET_VALUE_ERROR,
     GET_VALUE_SUCCESS,
-    GET_VALUE_ERROR
+    People,
 } from '../constants/testitem';
+import {Dispatch} from "redux"
 
 
-export const getValue = (page:number) =>async (dispatch: any) => {
+export const getValue = (page:number) =>async (dispatch: Dispatch<any>) => {
     dispatch({type: GET_VALUE});
     await fetch(`https://swapi.dev/api/people/?page=${page}`)
         .then((response: any) => response.json())
@@ -16,10 +18,10 @@ export const getValue = (page:number) =>async (dispatch: any) => {
         })
 };
 
-const getValueSuccess = (payload: Array<object>) => {
-    let pushPayload:Array<object> = []
+const getValueSuccess = (payload:any) => {
+    let pushPayload:People[] = []
 
-    payload.map((people:any)=>{
+    payload.map((people:People)=>{
         return pushPayload.push({
             name:people.name,
             height:people.height,
@@ -34,7 +36,7 @@ const getValueSuccess = (payload: Array<object>) => {
     });
 };
 
-const getValueError = (message: string) => {
+const getValueError = (message:string) => {
     return ({
         type: GET_VALUE_ERROR,
         message

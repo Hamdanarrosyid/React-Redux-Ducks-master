@@ -2,16 +2,16 @@ import {
   GET_VALUE_ERROR,
   GET_VALUE_SUCCESS,
   GET_VALUE
-} from '../constants/testitem';
+,People} from '../constants/testitem';
 import { errorGetValue, startGetValue, successGetValue } from '../utils/testitem';
 import { TestItemStateType } from '../../classes/TestItemStateType';
 import { ResponseType } from '../../classes/ResponseType';
 
-let initialState: any = new TestItemStateType();
+let initialState: TestItemStateType = new TestItemStateType();
 
 interface actionType {
   type:string,
-  pushPayload:Array<object>,
+  pushPayload:People[],
   message:string
 }
 
@@ -22,10 +22,8 @@ export default function TestItemReducer(state = initialState, action:actionType)
       return Object.assign({}, startGetValue(state));
     case GET_VALUE_SUCCESS:
       responseData = new ResponseType();
-      // responseData.message = 'succes';
       responseData.dataPeople = action.pushPayload
       const textboxSuccessData: ResponseType = responseData;
-      console.log(textboxSuccessData)
       return Object.assign({}, successGetValue(state), { textboxSuccessData });
     case GET_VALUE_ERROR:
       responseData = new ResponseType();

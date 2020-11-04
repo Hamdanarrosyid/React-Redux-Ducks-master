@@ -3,15 +3,17 @@ import Navbar from "../../components/Navbar/Navbar";
 // @ts-ignore
 import Plotly from 'plotly.js-basic-dist';
 import createPlotlyComponent from 'react-plotly.js/factory'
-// import HeadPage from "../../components/HeadPage/HeadPage";
+import HeadPage from "../../components/HeadPage/HeadPage";
 import {useDispatch, useSelector} from "react-redux";
 import {TestItemStateType} from "../../classes/TestItemStateType";
 import {getValue} from "../../redux/actions";
+import {RootStore} from "../../redux";
+import {People} from "../../redux/constants/testitem";
 
 const Plot = createPlotlyComponent(Plotly)
 
 const BarChart = () => {
-    const getData: TestItemStateType = useSelector((state: any) => state.testItem)
+    const getData: TestItemStateType = useSelector((state: RootStore) => state.people)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -19,10 +21,10 @@ const BarChart = () => {
     }, [dispatch])
 
     let name: Array<string> = []
-    let height: Array<string> = []
-    let mass: Array<string> = []
+    let height: Array<number> = []
+    let mass: Array<number> = []
 
-    getData.textboxSuccessData.dataPeople.map((people: any) => {
+    getData.textboxSuccessData.dataPeople.map((people: People) => {
         name.push(people.name)
         height.push(people.height)
         mass.push(people.mass)
@@ -32,11 +34,11 @@ const BarChart = () => {
     return (
         <Fragment>
             <Navbar/>
-            <div className="p-mx-auto p-lg-10">
-                {/*    <HeadPage text='Chart Page'/>*/}
-                {getData.isLoading ? (
-                    <p className='p-text-center'>loading</p>
-                ) : getData.isSuccess ? (
+            {getData.isLoading ? (
+                <p className='p-text-center'>loading</p>
+            ) : getData.isSuccess ? (
+                <div className="p-mx-auto p-lg-10">
+                    <HeadPage text='Chart Page'/>
                     <div className="p-card p-shadow-2 p-pb-5">
                         <Plot
                             data={[
@@ -62,9 +64,9 @@ const BarChart = () => {
 
                         />
                     </div>
-                ) : <p>{getData.textboxErrorData.message}</p>
-                }
-            </div>
+                </div>
+            ) : <p className='p-text-center'>{getData.textboxErrorData.message}</p>
+            }
         </Fragment>
     )
 }
