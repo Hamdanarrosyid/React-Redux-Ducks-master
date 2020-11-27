@@ -47,7 +47,7 @@ const Table = () => {
     useEffect(() => {
         dispatch(getValue(page.page+1))
     },[page.page,dispatch])
-    
+
     return (
         <Fragment>
             <Navbar/>
